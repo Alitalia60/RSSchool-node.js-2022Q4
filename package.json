@@ -1,0 +1,20 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "node.js task filemanager",
+  "main": "fm.js",
+  "type": "module",
+  "scripts": {
+    "start": "node fm.js -- --username=Andrew"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Alitalia60/RSSchool-node.js-2022Q4.git#file-manager"
+  },
+  "author": "Andrew Litvinov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alitalia60/RSSchool-node.js-2022Q4/issues"
+  },
+  "homepage": "https://github.com/Alitalia60/RSSchool-node.js-2022Q4/tree/file-manager#readme"
+}
