@@ -26,9 +26,17 @@ export const ls = async (pathToDir) => {
     if (!pathToDir) {
       pathToDir = fmSettings.currentDir;
     }
-    const files = await fs.readdir(pathToDir);
-    //TODO  - not completed
-    console.table(files);
+    await fs.readdir(pathToDir).then((files) => {
+      console.log(files);
+      // const arrayForTable = files.map(async (item) => {
+      //   // let stats = await fs.stat(path.join(pathToDir, item));
+      //   // return { name: item, type: stats.isDirectory() };
+      //   {
+      //     name: item;
+      //   }
+      // });
+    });
+    console.table(arrayForTable);
   } catch (error) {
     fmMessage(fmMessagesList.invalid);
     fmMessage(error.code);

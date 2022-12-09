@@ -38,7 +38,9 @@ readLine.on('line', async (data) => {
 
   if (operation) {
     // console.log(operation, ...argsArray);
+    console.log();
     await operList[operation].executeFunc(...argsArray);
+    console.log();
   }
 
   fmMessage(fmMessagesList.homeFolder);
