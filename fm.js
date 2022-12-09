@@ -1,31 +1,46 @@
-import { stdin, stdout } from 'node:process';
-import { createInterface } from 'node:readline';
-import { parseCmdLine } from './utils/parseCmdLine.js';
-import { fmOptions, color, messages } from './utils/constants.js';
+import { createInterface } from 'node:readline/promises';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
 
-fmOptions.currentUser = process.argv.slice(3)[0].replace('--username=', '');
-console.clear();
-console.log('--------------------------------------------------------');
-console.log(messages.greeting);
-console.log();
+import { fmMessagesList } from './lib/constants.js';
+import { fmMessage, initSettings } from './lib/utils.js';
+import { parseAndValidate } from './validators/parseAndValidate.js';
+import { operList } from './lib/router.js';
 
-// process.exit(0);
-const rl = createInterface({
-  input: stdin,
-  output: stdout,
-  prompt: color.FgMagenta + 'FM > ' + color.Reset,
+const __dirname = fileURLToPath(dirname(import.meta.url));
+
+export const fmSettings = {
+  currentUser: 'NoNameUser',
+  currentDir: __dirname,
+};
+
+initSettings(fmSettings);
+
+fmMessage(fmMessagesList.greeting);
+
+const readLine = createInterface({
+  input: process.stdin,
+  output: process.stdout,
 });
 
-rl.prompt();
-rl.on('line', (data) => {
-  const cmdLine = data.trim();
-  if (cmdLine === '.exit') {
-    rl.close();
+readLine.setPrompt('FM >');
+fmMessage(fmMessagesList.homeFolder);
+readLine.prompt();
+
+readLine.on('close', () => fmMessage(fmMessagesList.goodbye));
+
+readLine.on('line', async (data) => {
+  if (data.trim() === '.exit') {
+    readLine.close();
+    return;
+  }
+  const [operation, argsArray] = parseAndValidate(data);
+
+  if (operation) {
+    // console.log(operation, ...argsArray);
+    await operList[operation].executeFunc(...argsArray);
   }
 
-  const cmdAndArgs = parseCmdLine(data.trim());
-  // doOperation(cmdAndArgs);
-  console.log(cmdAndArgs);
-  showCurrentDir();
+  fmMessage(fmMessagesList.homeFolder);
+  readLine.prompt();
 });
-rl.on('close', () => stdout.write(messages.goodbye));

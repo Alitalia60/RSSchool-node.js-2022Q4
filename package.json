@@ -5,7 +5,8 @@
   "main": "fm.js",
   "type": "module",
   "scripts": {
-    "start": "node fm.js -- --username=Andrew"
+    "start": "node ./fm.js",
+    "start-test": "node ./fm.js --username=Boss"
   },
   "repository": {
     "type": "git",
