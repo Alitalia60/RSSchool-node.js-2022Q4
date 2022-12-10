@@ -22,23 +22,30 @@ export const changeDir = async (pathToDir) => {
   }
 };
 export const ls = async (pathToDir) => {
-  try {
-    if (!pathToDir) {
-      pathToDir = fmSettings.currentDir;
-    }
-    await fs.readdir(pathToDir).then((files) => {
-      console.log(files);
-      // const arrayForTable = files.map(async (item) => {
-      //   // let stats = await fs.stat(path.join(pathToDir, item));
-      //   // return { name: item, type: stats.isDirectory() };
-      //   {
-      //     name: item;
-      //   }
-      // });
-    });
-    console.table(arrayForTable);
-  } catch (error) {
-    fmMessage(fmMessagesList.invalid);
-    fmMessage(error.code);
+  // try {
+  if (!pathToDir) {
+    pathToDir = fmSettings.currentDir;
   }
+
+  let arrayForTable = [];
+  const files = await fs.readdir(pathToDir);
+  const filesDetailed = await getFilesDetail(files);
+  console.table(filesDetailed);
+  // } catch (error) {
+  // fmMessage(fmMessagesList.failed);
+  // fmMessage(error.code);
+  // }
 };
+
+async function getFilesDetail(arrayOfNames) {
+  // console.table(arrayOfNames);
+  let arr = [];
+  for (const file of arrayOfNames) {
+    let stats = await fs.stat(path.join(fmSettings.currentDir, file));
+    arr.push({
+      Name: file,
+      Type: stats.isDirectory() ? 'directory' : 'file',
+    });
+  }
+  return arr;
+}
