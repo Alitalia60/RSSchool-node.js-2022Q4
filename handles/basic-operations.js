@@ -7,6 +7,7 @@ import { fmMessagesList } from '../lib/constants.js';
 import { fmMessage } from '../lib/utils.js';
 
 //*****************************************
+//!! Done
 export const cat = async (pathToFile) => {
   try {
     const fileURL = path.resolve(fmSettings.currentDir, pathToFile);
@@ -24,6 +25,7 @@ export const cat = async (pathToFile) => {
 };
 
 //*****************************************
+//!! Done
 export const add = async (newFileName) => {
   try {
     const fileURL = path.resolve(fmSettings.currentDir, newFileName);
@@ -35,6 +37,7 @@ export const add = async (newFileName) => {
 };
 
 //*****************************************
+//!! Done
 export const rn = async (pathToFile, newFileName) => {
   const oldFileURL = path.resolve(fmSettings.currentDir, pathToFile);
   const newFileURL = path.resolve(fmSettings.currentDir, newFileName);
@@ -47,43 +50,27 @@ export const rn = async (pathToFile, newFileName) => {
 };
 
 //*****************************************
+//!! Done
 export const cp = async (pathToFile, pathToNewDir) => {
   const oldFileURL = path.resolve(fmSettings.currentDir, pathToFile);
+  console.log(oldFileURL);
   const newFileURL = path.resolve(
     fmSettings.currentDir,
     pathToNewDir,
-    pathToFile
+    path.basename(pathToFile)
   );
+  console.log(newFileURL);
 
-  await fsPromises.stat(oldFileURL).then(
-    (stats) => {
-      if (stats.isDirectory()) {
-        fmMessage(fmMessagesList.invalid);
-        fmMessage(`${pathToFile} is directory`);
-        return;
-      }
-    },
-    (err) => {
-      fmMessage(fmMessagesList.invalid);
-      fmMessage(err);
-      return;
-    }
-  );
-
-  await fsPromises.stat(path.resolve(fmSettings.currentDir, pathToNewDir)).then(
-    (stats) => {
-      if (!stats.isDirectory()) {
-        fmMessage(fmMessagesList.invalid);
-        fmMessage(`${newFileURL} is NOT directory`);
-        return;
-      }
-    },
-    (err) => {
-      fmMessage(fmMessagesList.invalid);
-      fmMessage(err);
-      return;
-    }
-  );
+  try {
+    await Promise.all([
+      fsPromises.stat(path.resolve(fmSettings.currentDir, pathToNewDir)),
+      fsPromises.stat(oldFileURL),
+    ]);
+  } catch (err) {
+    fmMessage(fmMessagesList.invalid);
+    fmMessage(err);
+    return;
+  }
 
   return await new Promise((res, rej) => {
     const rs = fs.createReadStream(oldFileURL);
@@ -102,11 +89,32 @@ export const cp = async (pathToFile, pathToNewDir) => {
 };
 
 //*****************************************
-export const mv = (pathToFile, pathToNewDir) => {
-  console.log('not implemented');
+//!! DONE
+export const mv = async (pathToFile, pathToNewDir) => {
+  const oldFileURL = path.resolve(fmSettings.currentDir, pathToFile);
+  try {
+    return await Promise.all([
+      await cp(pathToFile, pathToNewDir),
+      await fsPromises.rm(oldFileURL),
+    ]);
+  } catch (err) {
+    fmMessage(fmMessagesList.invalid);
+    fmMessage(err);
+  } finally {
+    return;
+  }
 };
 
 //*****************************************
-export const remove = (pathToFile) => {
-  console.log('not implemented');
+//!! DONE
+export const remove = async (pathToFile) => {
+  const fileUrl = path.resolve(fmSettings.currentDir, pathToFile);
+  try {
+    await fsPromises.rm(fileUrl);
+  } catch (err) {
+    fmMessage(fmMessagesList.invalid);
+    fmMessage(err);
+  } finally {
+    return;
+  }
 };
