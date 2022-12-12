@@ -1,6 +1,6 @@
 import { fmMessagesList } from '../lib/constants.js';
 import { operList } from '../lib/router.js';
-import { fmMessage } from '../lib/utils.js';
+import { fmMessage } from '../lib/fmMessage.js';
 
 export function parseAndValidate(data) {
   const [operation, ...argsArray] = data
@@ -15,17 +15,9 @@ export function parseAndValidate(data) {
   } else if (operList[operation].minArgs > argsArray.length) {
     fmMessage(fmMessagesList.invalid);
     fmMessage(
-      `"${operation}" require ${operList[operation].minArgs} argument(s)`
+      `"${operation}"At last ${operList[operation].minArgs} argument(s) require`
     );
     return [];
-  } else if (
-    operList[operation].prefix &&
-    operList[operation].prefix !== '--'
-  ) {
-    fmMessage(fmMessagesList.invalid);
-    fmMessage(`"${operation}" require argument(s) with prefix "--"`);
-    return [];
   }
-
   return [operation, argsArray];
 }

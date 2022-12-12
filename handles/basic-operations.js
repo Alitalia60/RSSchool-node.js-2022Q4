@@ -4,10 +4,12 @@ import path from 'node:path';
 
 import { fmSettings } from '../fm.js';
 import { fmMessagesList } from '../lib/constants.js';
-import { fmMessage } from '../lib/utils.js';
+import { fmMessage } from '../lib/fmMessage.js';
 
-//*****************************************
-//!! Done
+/********************************************************
+ * @function cat
+ * @param {string} pathToFile - filename or full path of file to print
+ */
 export const cat = async (pathToFile) => {
   try {
     const fileURL = path.resolve(fmSettings.currentDir, pathToFile);
@@ -24,8 +26,10 @@ export const cat = async (pathToFile) => {
   }
 };
 
-//*****************************************
-//!! Done
+/********************************************************
+ * @function add
+ * @param {string} newFileName - filename or full path of file to create
+ */
 export const add = async (newFileName) => {
   try {
     const fileURL = path.resolve(fmSettings.currentDir, newFileName);
@@ -36,8 +40,11 @@ export const add = async (newFileName) => {
   }
 };
 
-//*****************************************
-//!! Done
+/********************************************************
+ * @function rn
+ * @param {string} pathToFile - filename or full path of file to rename
+ * @param {string} newFileName - new ile name or path & new file name
+ */
 export const rn = async (pathToFile, newFileName) => {
   const oldFileURL = path.resolve(fmSettings.currentDir, pathToFile);
   const newFileURL = path.resolve(fmSettings.currentDir, newFileName);
@@ -49,17 +56,18 @@ export const rn = async (pathToFile, newFileName) => {
   }
 };
 
-//*****************************************
-//!! Done
+/********************************************************
+ * @function cp
+ * @param {string} pathToFile - filename or full path of file to rename
+ * @param {string} pathToNewDir - path to destination  dir
+ */
 export const cp = async (pathToFile, pathToNewDir) => {
   const oldFileURL = path.resolve(fmSettings.currentDir, pathToFile);
-  console.log(oldFileURL);
   const newFileURL = path.resolve(
     fmSettings.currentDir,
     pathToNewDir,
     path.basename(pathToFile)
   );
-  console.log(newFileURL);
 
   try {
     await Promise.all([
@@ -83,6 +91,7 @@ export const cp = async (pathToFile, pathToNewDir) => {
       })
       .on('close', () => {
         rs.destroy();
+        ws.destroy();
         res();
       });
   });

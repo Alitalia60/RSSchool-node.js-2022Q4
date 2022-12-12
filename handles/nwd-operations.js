@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fmSettings } from '../fm.js';
-import { fmMessage } from '../lib/utils.js';
+import { fmMessage } from '../lib/fmMessage.js';
 import { fmMessagesList } from '../lib/constants.js';
 import { isUrlTruth } from '../validators/isUrlTruth.js';
 

@@ -1,9 +1,10 @@
 import { createInterface } from 'node:readline/promises';
 import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
+import { dirname } from 'node:path';
 
 import { fmMessagesList } from './lib/constants.js';
-import { fmMessage, initSettings } from './lib/utils.js';
+import { initSettings } from './lib/initSettings.js';
+import { fmMessage } from './lib/fmMessage.js';
 import { parseAndValidate } from './validators/parseAndValidate.js';
 import { operList } from './lib/router.js';
 
@@ -16,14 +17,14 @@ export const fmSettings = {
 
 initSettings(fmSettings);
 
-fmMessage(fmMessagesList.greeting);
+fmMessage(fmMessagesList.greeting, '!');
 
 const readLine = createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-readLine.setPrompt('FM >');
+readLine.setPrompt('FM > ');
 fmMessage(fmMessagesList.homeFolder);
 readLine.prompt();
 
@@ -37,12 +38,21 @@ readLine.on('line', async (data) => {
   const [operation, argsArray] = parseAndValidate(data);
 
   if (operation) {
-    // console.log(operation, ...argsArray);
     console.log();
-    await operList[operation].executeFunc(...argsArray);
+    await operList[operation]
+      .executeFunc(...argsArray)
+      .catch((err) => {
+        fmMessage(fmMessagesList.invalid);
+        fmMessage(`  ${err}`);
+      })
+      .finally(() => {
+        console.log();
+        fmMessage(fmMessagesList.homeFolder);
+        readLine.prompt();
+      });
+  } else {
     console.log();
+    fmMessage(fmMessagesList.homeFolder);
+    readLine.prompt();
   }
-
-  fmMessage(fmMessagesList.homeFolder);
-  readLine.prompt();
 });
