@@ -1,23 +1,25 @@
+if you want, contact me, please, by discord: @Alitalia22#5200
+
 # File-Manager
 
 For usage type at CLI:
 
-`node ./fc.js --username=SomeName` where: `SomeName` - do not use spaces in username!!
+`node ./fm.js --username=SomeName` where: `SomeName` - do not use spaces in username!!
 
 if username= empty, name `Guest` will be used
 or
 
 `npm run start-test` (user name implemented for testing purpose).
 
-**Note** (if you check task contact me, please, by discord: @Alitalia22#5200)
-
-- **_If path includes spaces, it must use single or double quotas, for example:_**
-
-`cat "d:/Some path anywere/target file.txt"`
-
-or
-
-`rm 'e/Important document/file to delete.txt'`
+> **Note**
+>
+> - **_If path includes spaces, it must use single or double quotas, for example:_**
+>
+> `cat "d:/Some path anywere/target file.txt"`
+>
+> or
+>
+> `rm '/Important documents/file to delete.txt'`
 
 ### List of operations and their syntax:
 

@@ -3,10 +3,22 @@ import { operList } from '../lib/router.js';
 import { fmMessage } from '../lib/fmMessage.js';
 
 export function parseAndValidate(data) {
-  const [operation, ...argsArray] = data
-    .trim()
-    .replace(/ {1,}/g, ' ')
-    .split(' ');
+  let [operation, ...argsArray] = data.trim().split(' ');
+  let argsLine = argsArray.join(' ');
+  argsLine = argsLine.replaceAll(/'/g, '"');
+
+  if (argsLine.includes('"')) {
+    let quotasFound = [...argsLine.matchAll(/["]/g)].length;
+    if (quotasFound % 2 > 0) {
+      fmMessage(fmMessagesList.invalid);
+      fmMessage(`Unpaired quotes passed`);
+      return [];
+    }
+    argsArray = argsLine.split('"');
+  } else {
+    argsArray = argsLine.split(' ');
+  }
+  argsArray = argsArray.filter((item) => !!item);
 
   if (!operList.hasOwnProperty(operation)) {
     fmMessage(fmMessagesList.invalid);

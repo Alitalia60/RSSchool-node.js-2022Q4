@@ -46,6 +46,12 @@ export const add = async (newFileName) => {
  * @param {string} newFileName - new ile name or path & new file name
  */
 export const rn = async (pathToFile, newFileName) => {
+  if (path.dirname(newFileName) !== '.') {
+    fmMessage(fmMessagesList.invalid);
+    fmMessage('Second argument must be a file name, not a path');
+    return;
+  }
+
   const oldFileURL = path.resolve(fmSettings.currentDir, pathToFile);
   const newFileURL = path.resolve(fmSettings.currentDir, newFileName);
   try {
