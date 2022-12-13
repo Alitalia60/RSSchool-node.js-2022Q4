@@ -1,11 +1,14 @@
 import { stat } from 'node:fs/promises';
-export async function isUrlTruth(pathUrl) {
+export async function isUrlTruth(pathUrl, type = 'file') {
   if (!pathUrl) {
     return false;
   }
   try {
-    await stat(pathUrl);
-    return true;
+    const stats = await stat(pathUrl);
+    return (
+      (stats.isDirectory() && type === 'dir') ||
+      (!stats.isDirectory() && type === 'file')
+    );
   } catch (error) {
     if (error.code === 'ENOENT') {
       return false;

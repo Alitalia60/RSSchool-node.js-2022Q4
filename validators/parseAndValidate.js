@@ -5,7 +5,6 @@ import { fmMessage } from '../lib/fmMessage.js';
 export function parseAndValidate(data) {
   let [operation, ...argsArray] = data.trim().split(' ');
   let argsLine = argsArray.join(' ');
-  argsLine = argsLine.replaceAll(/'/g, '"');
 
   if (argsLine.includes('"')) {
     let quotasFound = [...argsLine.matchAll(/["]/g)].length;
@@ -27,7 +26,7 @@ export function parseAndValidate(data) {
   } else if (operList[operation].minArgs > argsArray.length) {
     fmMessage(fmMessagesList.invalid);
     fmMessage(
-      `"${operation}"At last ${operList[operation].minArgs} argument(s) require`
+      `"${operation}" At last ${operList[operation].minArgs} argument(s) required`
     );
     return [];
   }

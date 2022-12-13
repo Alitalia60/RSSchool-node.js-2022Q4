@@ -30,7 +30,7 @@ export const osInfo = async (arg) => {
           break;
 
         default:
-          rej('OS: invalid argument passed');
+          rej(`OS: invalid argument passed: ${arg}`);
           break;
       }
     } catch (err) {

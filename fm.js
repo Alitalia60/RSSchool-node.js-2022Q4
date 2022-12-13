@@ -17,7 +17,7 @@ export const fmSettings = {
 
 initSettings(fmSettings);
 
-// fmMessage(fmMessagesList.greeting, '!');
+fmMessage(fmMessagesList.greeting, '!');
 
 const readLine = createInterface({
   input: process.stdin,

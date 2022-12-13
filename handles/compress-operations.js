@@ -9,6 +9,7 @@ import { fmMessage } from '../lib/fmMessage.js';
 import { isUrlTruth } from '../validators/isUrlTruth.js';
 
 /********************************************************
+ * Compress file (using Brotli algorithm, should be done using Streams API)
  * @function compress
  * @param {string} sourceFile - filename or full path of file to compress
  * @param {string} [destDir] - destination path. if empty - current dir will be used
@@ -21,16 +22,14 @@ export const compress = async (sourceFile, destDir = '') => {
     return;
   }
 
-  let destDirUrl = '';
+  let destDirUrl = path.dirname(sourceFileUrl);
   if (destDir) {
-    destDirUrl = path.resolve(fmSettings.currentDir, destDir);
-    if (!(await isUrlTruth(destDirUrl))) {
+    destDirUrl = path.resolve(destDirUrl, destDir);
+    if (!(await isUrlTruth(destDirUrl, 'dir'))) {
       fmMessage(fmMessagesList.invalid);
       fmMessage(`No such directory ${destDirUrl}`);
       return;
     }
-  } else {
-    destDirUrl = fmSettings.currentDir;
   }
 
   let destFileName = path.basename(path.basename(sourceFileUrl) + '.br');
@@ -50,6 +49,7 @@ export const compress = async (sourceFile, destDir = '') => {
 };
 
 /********************************************************
+ * Decompress file (using Brotli algorithm, should be done using Streams API)
  * @function decompress
  * @param {string} sourceFile - filename or full path of file to decompress
  * @param {string} [destDir] - destination path. if empty - current dir will be used
@@ -63,17 +63,14 @@ export const decompress = async (sourceFile, destDir) => {
     return;
   }
 
-  let destDirUrl = '';
+  let destDirUrl = path.dirname(sourceFileUrl);
   if (destDir) {
-    destDirUrl = path.resolve(fmSettings.currentDir, destDir);
-    console.log('destDirUrl 1', destDirUrl);
-    if (!(await isUrlTruth(destDirUrl))) {
+    destDirUrl = path.resolve(destDirUrl, destDir);
+    if (!(await isUrlTruth(destDirUrl, 'dir'))) {
       fmMessage(fmMessagesList.invalid);
       fmMessage(`No such directory ${destDirUrl}`);
       return;
     }
-  } else {
-    destDirUrl = fmSettings.currentDir;
   }
 
   let destFileName = path.basename(
