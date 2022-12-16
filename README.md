@@ -13,13 +13,9 @@ or
 
 > **Note**
 >
-> - **_If path includes spaces, it must use single or double quotas, for example:_**
+> - **_If path includes spaces, use double quotas, for example:_**
 >
 > `cat "d:/Some path anywere/target file.txt"`
->
-> or
->
-> `rm '/Important documents/file to delete.txt'`
 
 ### List of operations and their syntax:
 
