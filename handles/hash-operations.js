@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fmSettings } from '../fm.js';
 import { fmMessagesList } from '../lib/constants.js';
 import { fmMessage } from '../lib/fmMessage.js';
-import { isUrlTruth } from '../validators/isUrlTruth.js';
+import { isFileUrlTruth } from '../validators/isUrlTruth.js';
 
 /********************************************************
  * Calculate hash for file and print it into console
@@ -14,7 +14,7 @@ import { isUrlTruth } from '../validators/isUrlTruth.js';
 export const hash = async (pathToFile) => {
   const fileUrl = path.resolve(fmSettings.currentDir, pathToFile);
 
-  if (!(await isUrlTruth(fileUrl))) {
+  if (!(await isFileUrlTruth(fileUrl))) {
     fmMessage(fmMessagesList.failed);
     fmMessage(`No such file ${fileUrl}`);
     return;

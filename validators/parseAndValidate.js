@@ -30,5 +30,5 @@ export function parseAndValidate(data) {
     );
     return [];
   }
-  return [operation, argsArray];
+  return [operation, ...argsArray];
 }

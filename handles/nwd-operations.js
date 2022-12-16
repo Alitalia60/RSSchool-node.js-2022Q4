@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fmSettings } from '../fm.js';
 import { fmMessage } from '../lib/fmMessage.js';
 import { fmMessagesList } from '../lib/constants.js';
-import { isUrlTruth } from '../validators/isUrlTruth.js';
+import { isDirUrlTruth, isFileUrlTruth } from '../validators/isUrlTruth.js';
 
 /********************************************************
  * Go upper from current directory (when you are in the root folder this operation shouldn't change working directory)
@@ -51,9 +51,10 @@ export const ls = async (pathToDir) => {
   } else {
     dirURL = path.resolve(fmSettings.currentDir, pathToDir);
   }
-  if (!(await isUrlTruth(dirURL, 'dir'))) {
+
+  if (!(await isDirUrlTruth(dirURL))) {
     fmMessage(fmMessagesList.failed);
-    fmMessage('ENOENT. Path not exist');
+    fmMessage('ENOENT. Directory not exist');
     return;
   }
 

@@ -35,7 +35,7 @@ readLine.on('line', async (data) => {
     readLine.close();
     return;
   }
-  const [operation, argsArray] = parseAndValidate(data);
+  const [operation, ...argsArray] = parseAndValidate(data);
 
   if (operation) {
     console.log();

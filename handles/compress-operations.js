@@ -6,7 +6,7 @@ import { pipeline } from 'node:stream';
 import { fmSettings } from '../fm.js';
 import { fmMessagesList } from '../lib/constants.js';
 import { fmMessage } from '../lib/fmMessage.js';
-import { isUrlTruth } from '../validators/isUrlTruth.js';
+import { isFileUrlTruth, isDirUrlTruth } from '../validators/isUrlTruth.js';
 
 /********************************************************
  * Compress file (using Brotli algorithm, should be done using Streams API)
@@ -16,7 +16,7 @@ import { isUrlTruth } from '../validators/isUrlTruth.js';
  */
 export const compress = async (sourceFile, destDir = '') => {
   const sourceFileUrl = path.resolve(fmSettings.currentDir, sourceFile);
-  if (!(await isUrlTruth(sourceFileUrl))) {
+  if (!(await isFileUrlTruth(sourceFileUrl))) {
     fmMessage(fmMessagesList.failed);
     fmMessage(`No such file ${sourceFileUrl}`);
     return;
@@ -25,7 +25,7 @@ export const compress = async (sourceFile, destDir = '') => {
   let destDirUrl = path.dirname(sourceFileUrl);
   if (destDir) {
     destDirUrl = path.resolve(destDirUrl, destDir);
-    if (!(await isUrlTruth(destDirUrl, 'dir'))) {
+    if (!(await isDirUrlTruth(destDirUrl))) {
       fmMessage(fmMessagesList.invalid);
       fmMessage(`No such directory ${destDirUrl}`);
       return;
@@ -57,7 +57,7 @@ export const compress = async (sourceFile, destDir = '') => {
 
 export const decompress = async (sourceFile, destDir) => {
   const sourceFileUrl = path.resolve(fmSettings.currentDir, sourceFile);
-  if (!(await isUrlTruth(sourceFileUrl))) {
+  if (!(await isFileUrlTruth(sourceFileUrl))) {
     fmMessage(fmMessagesList.invalid);
     fmMessage(`No such file ${sourceFileUrl}`);
     return;
@@ -66,7 +66,7 @@ export const decompress = async (sourceFile, destDir) => {
   let destDirUrl = path.dirname(sourceFileUrl);
   if (destDir) {
     destDirUrl = path.resolve(destDirUrl, destDir);
-    if (!(await isUrlTruth(destDirUrl, 'dir'))) {
+    if (!(await isDirUrlTruth(destDirUrl))) {
       fmMessage(fmMessagesList.invalid);
       fmMessage(`No such directory ${destDirUrl}`);
       return;
