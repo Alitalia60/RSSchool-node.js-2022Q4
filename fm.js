@@ -1,21 +1,18 @@
 import { createInterface } from 'node:readline/promises';
-import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
+import os from 'os';
 
 import { fmMessagesList } from './lib/constants.js';
-import { initSettings } from './lib/initSettings.js';
+import { setUserName } from './lib/setUserName.js';
 import { fmMessage } from './lib/fmMessage.js';
 import { parseAndValidate } from './validators/parseAndValidate.js';
 import { operList } from './lib/router.js';
 
-const __dirname = fileURLToPath(dirname(import.meta.url));
-
 export const fmSettings = {
-  currentUser: 'NoNameUser',
-  currentDir: __dirname,
+  currentUser: 'Guest',
+  currentDir: os.homedir(),
 };
 
-initSettings(fmSettings);
+setUserName();
 
 fmMessage(fmMessagesList.greeting, '!');
 

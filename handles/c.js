@@ -1,16 +1,13 @@
-import {
-  createBrotliCompress,
-  createBrotliDecompress,
-  constants,
-} from 'node:zlib';
+import { createBrotliCompress, createBrotliDecompress } from 'node:zlib';
 import { createReadStream, createWriteStream } from 'node:fs';
 import path from 'node:path';
-import { pipeline } from 'node:stream/promises';
+import { pipeline } from 'node:stream';
 
 import { fmSettings } from '../fm.js';
 import { fmMessagesList } from '../lib/constants.js';
 import { fmMessage } from '../lib/fmMessage.js';
 import { isFileUrlTruth, isDirUrlTruth } from '../validators/isUrlTruth.js';
+import { time } from 'node:console';
 
 /********************************************************
  * Compress file (using Brotli algorithm, should be done using Streams API)
@@ -42,21 +39,18 @@ export const compress = async (sourceFile, destDir = '') => {
   }
   try {
     const destFileUrl = path.resolve(destDirUrl, destFileName);
-
-    console.time('Packing');
-    fmMessage('Compressing, wait please...');
-
-    await pipeline(
+    // const pack = createBrotliCompress();
+    // const source = createReadStream(sourceFileUrl);
+    // const destination = createWriteStream(destFileUrl);
+    console.time('compressing');
+    pipeline(
       createReadStream(sourceFileUrl),
-      createBrotliCompress({
-        params: {
-          [constants.BROTLI_PARAM_QUALITY]: constants.BROTLI_MIN_QUALITY,
-        },
-      }),
+      createBrotliCompress(),
       createWriteStream(destFileUrl)
     );
-    console.timeEnd('Packing');
-    fmMessage('Compressing done: ', destFileUrl);
+    console.timeEnd('compressing');
+    // source.on('data', (data) => {});
+    // source.pipe(pack).pipe(destination);
   } catch (err) {
     fmMessage(fmMessagesList.failed);
     fmMessage(err);
@@ -93,15 +87,10 @@ export const decompress = async (sourceFile, destDir) => {
 
   try {
     const destFileUrl = path.resolve(destDirUrl, destFileName);
-    console.time('Unpacking');
-    fmMessage('Unpacking time, wait please...');
-    await pipeline(
-      createReadStream(sourceFileUrl),
-      createBrotliDecompress(),
-      createWriteStream(destFileUrl)
-    );
-    console.timeEnd('Unpacking');
-    fmMessage('Decompressing done: ', destFileUrl);
+    const unPack = createBrotliDecompress();
+    const source = createReadStream(sourceFileUrl);
+    const destination = createWriteStream(destFileUrl);
+    source.pipe(unPack).pipe(destination);
   } catch (err) {
     fmMessage(fmMessagesList.failed);
     fmMessage(err);
