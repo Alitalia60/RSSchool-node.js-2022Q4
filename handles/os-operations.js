@@ -25,7 +25,7 @@ export const osInfo = async (arg) => {
           fmMessage(os.userInfo().username);
           break;
 
-        case '--arhitecture':
+        case '--architecture':
           fmMessage(os.arch);
           break;
 
