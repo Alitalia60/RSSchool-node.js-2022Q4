@@ -2,12 +2,17 @@ import os from 'os';
 
 import { fmMessage } from '../lib/fmMessage.js';
 
+/********************************************************
+ *Print some info about operating system
+ * @function osInfo
+ * @param {string} arg - one of args [--xpus, --homedir, --username, --EOL, --architecture]
+ *  */
 export const osInfo = async (arg) => {
   return await new Promise((res, rej) => {
     try {
       switch (arg) {
         case '--EOL':
-          fmMessage(JSON.stringify(os.EOL));
+          fmMessage('End of line is: ', JSON.stringify(os.EOL));
           break;
 
         case '--cpus':
@@ -18,15 +23,15 @@ export const osInfo = async (arg) => {
           break;
 
         case '--homedir':
-          fmMessage(os.homedir());
+          fmMessage('Homedir is: ', os.homedir());
           break;
 
         case '--username':
-          fmMessage(os.userInfo().username);
+          fmMessage('Username is: ', os.userInfo().username);
           break;
 
         case '--architecture':
-          fmMessage(os.arch);
+          fmMessage('Architecture is: ', os.arch);
           break;
 
         default:

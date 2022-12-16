@@ -54,7 +54,6 @@ export const compress = async (sourceFile, destDir = '') => {
  * @param {string} sourceFile - filename or full path of file to decompress
  * @param {string} [destDir] - destination path. if empty - current dir will be used
  */
-
 export const decompress = async (sourceFile, destDir) => {
   const sourceFileUrl = path.resolve(fmSettings.currentDir, sourceFile);
   if (!(await isFileUrlTruth(sourceFileUrl))) {

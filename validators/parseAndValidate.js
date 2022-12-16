@@ -2,6 +2,11 @@ import { fmMessagesList } from '../lib/constants.js';
 import { operList } from '../lib/router.js';
 import { fmMessage } from '../lib/fmMessage.js';
 
+/********************************************************
+ * Get command line, checks if it is correct and validate arguments list
+ * @function parseAndValidate
+ * @param {string} data - command line : command and list of arguments
+ *  */
 export function parseAndValidate(data) {
   let [operation, ...argsArray] = data.trim().split(' ');
   let argsLine = argsArray.join(' ');

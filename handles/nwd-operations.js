@@ -26,16 +26,14 @@ export const upDir = async () => {
  * @param {string} pathToDir - destination directory path
  */
 export const changeDir = async (pathToDir) => {
-  try {
-    const desiredPath = path.resolve(fmSettings.currentDir, pathToDir);
-    const stats = await fs.stat(desiredPath);
-    if (stats.isDirectory()) fmSettings.currentDir = desiredPath;
-  } catch (error) {
+  const desiredPath = path.resolve(fmSettings.currentDir, pathToDir);
+  if (!(await isDirUrlTruth(desiredPath))) {
     fmMessage(fmMessagesList.failed);
-    fmMessage(error.message);
-  } finally {
+    fmMessage(`Path not exists: ${desiredPath}`);
     return;
   }
+  fmSettings.currentDir = desiredPath;
+  return;
 };
 
 /********************************************************
