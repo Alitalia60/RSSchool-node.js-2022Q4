@@ -13,6 +13,7 @@ export const osInfo = async (arg) => {
       switch (arg) {
         case '--EOL':
           fmMessage('End of line is: ', JSON.stringify(os.EOL));
+
           break;
 
         case '--cpus':
@@ -31,7 +32,27 @@ export const osInfo = async (arg) => {
           break;
 
         case '--architecture':
-          fmMessage('Architecture is: ', os.arch);
+          fmMessage('Architecture is: ', os.arch());
+          break;
+
+        case '--full':
+          fmMessage('OS type: ', os.type());
+          fmMessage('OS version: ', os.version());
+          fmMessage('Platform: ', os.platform());
+          fmMessage('Release: ', os.release());
+          fmMessage('Architecture: ', os.arch());
+          fmMessage('Core: :');
+          console.table(os.cpus());
+          fmMessage(
+            'Total mem: ',
+            (os.totalmem() / 1024 / 1024).toFixed(2) + ' Mb'
+          );
+          fmMessage(
+            'Freemem is: ',
+            (os.freemem() / 1024 / 1024).toFixed(2) + ' Mb'
+          );
+          fmMessage('homedir is: ', os.homedir());
+          fmMessage('End of line is: ', JSON.stringify(os.EOL));
           break;
 
         default:

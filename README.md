@@ -53,6 +53,8 @@ or
 
   `os` `--architecture` - Get CPU architecture for which Node.js binary has compiled
 
+  `os` `--full` - Get set of infomation about system (it is additional option, not listed in task)
+
 - #### Hash calculation
 
   `hash` `path_to_file` - Calculate hash for file and print it into console
@@ -60,5 +62,11 @@ or
 - #### Compress and decompress operations
 
   `compress` `path_to_file path_to_destination` - Compress file (using Brotli algorithm)
+
+  > NOTE
+  >
+  > if `path_to_destination` not passed - compessed file will be with name of source file plus `.br` extension, for example:
+  >
+  > `fileName.txt` - >`fileName.txt.br`
 
   `decompress` `path_to_file path_to_destination` - Decompress file (using Brotli algorithm)
