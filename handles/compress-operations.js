@@ -31,7 +31,7 @@ export const compress = async (sourceFile, destDir = '') => {
   if (destDir) {
     destDirUrl = path.resolve(destDirUrl, destDir);
     if (!(await isDirUrlTruth(destDirUrl))) {
-      fmMessage(fmMessagesList.invalid);
+      fmMessage(fmMessagesList.failed);
       fmMessage(`No such directory ${destDirUrl}`);
       return;
     }
@@ -76,7 +76,7 @@ export const compress = async (sourceFile, destDir = '') => {
 export const decompress = async (sourceFile, destDir) => {
   const sourceFileUrl = path.resolve(fmSettings.currentDir, sourceFile);
   if (!(await isFileUrlTruth(sourceFileUrl))) {
-    fmMessage(fmMessagesList.invalid);
+    fmMessage(fmMessagesList.failed);
     fmMessage(`No such file ${sourceFileUrl}`);
     return;
   }
@@ -86,7 +86,7 @@ export const decompress = async (sourceFile, destDir) => {
   if (destDir) {
     destDirUrl = path.resolve(destDirUrl, destDir);
     if (!(await isDirUrlTruth(destDirUrl))) {
-      fmMessage(fmMessagesList.invalid);
+      fmMessage(fmMessagesList.failed);
       fmMessage(`No such directory ${destDirUrl}`);
       return;
     }

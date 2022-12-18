@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fmSettings } from '../fm.js';
 import { fmMessagesList } from '../lib/constants.js';
 import { fmMessage } from '../lib/fmMessage.js';
+import { isDirUrlTruth, isFileUrlTruth } from '../validators/isUrlTruth.js';
 
 /********************************************************
  *Read file and print it's content in console (should be done using Readable stream):
@@ -49,7 +50,7 @@ export const add = async (newFileName) => {
  */
 export const rn = async (pathToFile, newFileName) => {
   if (path.dirname(newFileName) !== '.') {
-    fmMessage(fmMessagesList.invalid);
+    fmMessage(fmMessagesList.failed);
     fmMessage('rn: Second argument must be a file name, not a path');
     return;
   }
@@ -72,20 +73,24 @@ export const rn = async (pathToFile, newFileName) => {
  */
 export const cp = async (pathToFile, pathToNewDir) => {
   const oldFileURL = path.resolve(fmSettings.currentDir, pathToFile);
-  const newFileURL = path.resolve(
-    path.dirname(oldFileURL),
-    pathToNewDir,
-    path.basename(oldFileURL)
-  );
+  const newDirURL = path.resolve(path.dirname(oldFileURL), pathToNewDir);
+  const newFileURL = path.resolve(newDirURL, path.basename(oldFileURL));
 
-  try {
-    await Promise.all([
-      fsPromises.stat(path.resolve(fmSettings.currentDir, pathToNewDir)),
-      fsPromises.stat(oldFileURL),
-    ]);
-  } catch (err) {
+  if (!(await isFileUrlTruth(oldFileURL))) {
     fmMessage(fmMessagesList.failed);
-    fmMessage(`cp:' ${err}`);
+    fmMessage(`No such file ${destDirUrl}`);
+    return;
+  }
+
+  if (await isFileUrlTruth(newFileURL)) {
+    fmMessage(fmMessagesList.failed);
+    fmMessage(`File already exists ${newFileURL}`);
+    return;
+  }
+
+  if (!(await isDirUrlTruth(newDirURL))) {
+    fmMessage(fmMessagesList.failed);
+    fmMessage(`No such directory ${newDirURL}`);
     return;
   }
 
