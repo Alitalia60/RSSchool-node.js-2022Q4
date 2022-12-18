@@ -11,6 +11,7 @@ import { fmSettings, readLine } from '../fm.js';
 import { fmMessagesList } from '../lib/constants.js';
 import { fmMessage } from '../lib/fmMessage.js';
 import { isFileUrlTruth, isDirUrlTruth } from '../validators/isUrlTruth.js';
+import { rm } from 'node:fs/promises';
 
 /********************************************************
  * Compress file (using Brotli algorithm, should be done using Streams API)
@@ -41,12 +42,12 @@ export const compress = async (sourceFile, destDir = '') => {
 
   if (await isFileUrlTruth(destFileUrl)) {
     fmMessage(fmMessagesList.failed);
-    fmMessage(`File ${destFileUrl} already exists`);
+    fmMessage(`File ${destFileUrl}`, ' already exists');
     return;
   }
 
   try {
-    console.time('Packing');
+    console.time('Processing');
     fmMessage('Compressing, wait please...');
 
     await pipeline(
@@ -58,7 +59,7 @@ export const compress = async (sourceFile, destDir = '') => {
       }),
       createWriteStream(destFileUrl)
     );
-    console.timeEnd('Packing');
+    console.timeEnd('Processing');
     fmMessage('Compressing done: ', destFileUrl);
   } catch (err) {
     fmMessage(fmMessagesList.failed);
@@ -81,6 +82,7 @@ export const decompress = async (sourceFile, destDir) => {
   }
 
   let destDirUrl = path.dirname(sourceFileUrl);
+
   if (destDir) {
     destDirUrl = path.resolve(destDirUrl, destDir);
     if (!(await isDirUrlTruth(destDirUrl))) {
@@ -93,20 +95,32 @@ export const decompress = async (sourceFile, destDir) => {
   let destFileName = path.basename(
     path.basename(sourceFileUrl, path.extname(sourceFileUrl))
   );
+  const destFileUrl = path.resolve(destDirUrl, destFileName);
+
+  if (await isFileUrlTruth(destFileUrl)) {
+    fmMessage(fmMessagesList.failed);
+    fmMessage(`File ${destFileUrl}`, ' already exists');
+    return;
+  }
 
   try {
-    const destFileUrl = path.resolve(destDirUrl, destFileName);
-    console.time('Unpacking');
-    fmMessage('Unpacking time, wait please...');
+    // console.time('Processing');
+    fmMessage('Unpacking, wait please...');
+
     await pipeline(
       createReadStream(sourceFileUrl),
       createBrotliDecompress(),
       createWriteStream(destFileUrl)
     );
-    console.timeEnd('Unpacking');
-    fmMessage('Decompressing done: ', destFileUrl);
+
+    // console.timeEnd('Processing');
+    fmMessage('Unpacking done: ', destFileUrl);
   } catch (err) {
     fmMessage(fmMessagesList.failed);
     fmMessage(err);
+    //if source file is not brotli compressed and error occurs - delete empty destDirUrl
+    if (isFileUrlTruth(destFileUrl)) {
+      await rm(destFileUrl);
+    }
   }
 };
