@@ -7,7 +7,7 @@ import { createReadStream, createWriteStream } from 'node:fs';
 import path from 'node:path';
 import { pipeline } from 'node:stream/promises';
 
-import { fmSettings } from '../fm.js';
+import { fmSettings, readLine } from '../fm.js';
 import { fmMessagesList } from '../lib/constants.js';
 import { fmMessage } from '../lib/fmMessage.js';
 import { isFileUrlTruth, isDirUrlTruth } from '../validators/isUrlTruth.js';
@@ -36,13 +36,16 @@ export const compress = async (sourceFile, destDir = '') => {
     }
   }
 
-  let destFileName = path.basename(path.basename(sourceFileUrl) + '.br');
-  if (!destFileName) {
-    destFileName = path.basename(sourceFile) + '.br';
-  }
-  try {
-    const destFileUrl = path.resolve(destDirUrl, destFileName);
+  let destFileName = `${path.basename(sourceFileUrl)}.br`;
+  const destFileUrl = path.resolve(destDirUrl, destFileName);
 
+  if (await isFileUrlTruth(destFileUrl)) {
+    fmMessage(fmMessagesList.failed);
+    fmMessage(`File ${destFileUrl} already exists`);
+    return;
+  }
+
+  try {
     console.time('Packing');
     fmMessage('Compressing, wait please...');
 

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node ./fm.js",
-    "start-test": "node ./fm.js --username=Boss"
+    "start-test": "node ./fm.js --username=Guest"
   },
   "repository": {
     "type": "git",

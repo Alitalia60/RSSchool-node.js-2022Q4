@@ -6,6 +6,7 @@ import { fmMessage } from '../lib/fmMessage.js';
  * Get command line, checks if it is correct and validate arguments list
  * @function parseAndValidate
  * @param {string} data - command line : command and list of arguments
+ * @returns {Array[string]} - operation and arguments list
  *  */
 export function parseAndValidate(data) {
   let [operation, ...argsArray] = data.trim().split(' ');

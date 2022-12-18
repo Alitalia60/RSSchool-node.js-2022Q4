@@ -63,10 +63,16 @@ or
 
   `compress` `path_to_file path_to_destination` - Compress file (using Brotli algorithm)
 
-  > NOTE
+  > **Note**
   >
-  > if `path_to_destination` not passed - compessed file will be with name of source file plus `.br` extension, for example:
+  > if `path_to_destination` not passed - compressed file will have name of source file plus `.br` extension, for example:
   >
   > `fileName.txt` - >`fileName.txt.br`
 
   `decompress` `path_to_file path_to_destination` - Decompress file (using Brotli algorithm)
+
+  > **Note**
+  >
+  > if `path_to_destination` not passed - decompressed file will have name of source file minus last extension, for example:
+  >
+  > `fileName.txt.br` - >`fileName.txt`; `compressed.br` - >`compressed`

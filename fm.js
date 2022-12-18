@@ -1,5 +1,5 @@
 import { createInterface } from 'node:readline/promises';
-import os from 'os';
+import { homedir } from 'os';
 
 import { fmMessagesList } from './lib/constants.js';
 import { setUserName } from './lib/setUserName.js';
@@ -9,19 +9,19 @@ import { operList } from './lib/router.js';
 
 export const fmSettings = {
   currentUser: 'Guest',
-  currentDir: os.homedir(),
+  currentDir: homedir(),
 };
 
 setUserName();
 
 fmMessage(fmMessagesList.greeting, '!');
 
-const readLine = createInterface({
+export const readLine = createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-readLine.setPrompt('FM > ');
+readLine.setPrompt('FM>> ');
 fmMessage(fmMessagesList.homeFolder);
 readLine.prompt();
 
