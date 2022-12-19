@@ -1,0 +1,78 @@
+Contact me, if you want, by discord: https://discordapp.com/users/@Alitalia22#5200/
+
+# File-Manager
+
+For usage type at CLI:
+
+`node ./fm.js --username=SomeName` where: `SomeName` - do not use spaces in username!!
+
+if username= empty, name `Guest` will be used
+or
+
+`npm run start-test` (user name implemented for testing purpose).
+
+> **Note**
+>
+> - _If path includes spaces, use double quotas, for example:_
+>
+> `cat "d:/Some path anywere/target file.txt"`
+
+## List of operations and their syntax:
+
+- ### Navigation & working directory (nwd)
+
+  `up` - Go upper from current directory (when you are in the root folder this operation shouldn't change working directory)
+
+  `cd` `path_to_directory` - Go to dedicated folder from current directory (`path_to_directory` can be relative or absolute)
+
+  `ls` - List all files and folder in current directory and print it to console
+
+- ### Basic operations with files
+
+  `cat` `path_to_file` - Read file and print it's content in console
+
+  `add` `new_file_name` - Create empty file in current working directory
+
+  `rn` `path_to_file new_filename` - Rename file
+
+  `cp` `path_to_file path_to_new_directory` - Copy file
+
+  `mv` `path_to_file path_to_new_directory` - Move file (same as copy but initial file is deleted)
+
+  `rm` `path_to_file` - Delete file
+
+- #### Operating system info (prints following information in console)
+
+  `os` `--EOL`- Get EOL (default system End-Of-Line)
+
+  `os` `--cpus` - Get host machine CPUs info (overall amount of CPUS plus model and clock rate (in GHz) for each of them)
+
+  `os` `--homedir`- Get home directory:
+
+  _`os` `--username` - Get current system user name_ (Do not confuse with the username that is set when the application starts)
+
+  `os` `--architecture` - Get CPU architecture for which Node.js binary has compiled
+
+  `os` `--full` - Get set of infomation about system (it is additional option, not listed in task)
+
+- #### Hash calculation
+
+  `hash` `path_to_file` - Calculate hash for file and print it into console
+
+- #### Compress and decompress operations
+
+  `compress` `path_to_file path_to_destination` - Compress file (using Brotli algorithm)
+
+  > **Note**
+  >
+  > if `path_to_destination` not passed - compressed file will have name of source file plus `.br` extension, for example:
+  >
+  > `fileName.txt` - >`fileName.txt.br`
+
+  `decompress` `path_to_file path_to_destination` - Decompress file (using Brotli algorithm)
+
+  > **Note**
+  >
+  > if `path_to_destination` not passed - decompressed file will have name of source file minus last extension, for example:
+  >
+  > `fileName.txt.br` - >`fileName.txt`; `compressed.br` - >`compressed`
