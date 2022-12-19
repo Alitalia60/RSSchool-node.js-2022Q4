@@ -20,9 +20,11 @@ export function parseAndValidate(data) {
       return [];
     }
     argsArray = argsLine.split('"');
+    argsArray = argsArray.map((item) => item.trim());
   } else {
     argsArray = argsLine.split(' ');
   }
+
   argsArray = argsArray.filter((item) => !!item);
 
   if (!operList.hasOwnProperty(operation)) {

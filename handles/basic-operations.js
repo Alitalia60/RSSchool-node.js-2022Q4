@@ -24,7 +24,7 @@ export const cat = async (pathToFile) => {
     });
   } catch (err) {
     fmMessage(fmMessagesList.failed);
-    fmMessage(`cat:' ${err}`);
+    fmMessage(`cat: ${err}`);
   }
 };
 
@@ -38,7 +38,7 @@ export const add = async (newFileName) => {
     return await fsPromises.open(fileURL, 'wx');
   } catch (err) {
     fmMessage(fmMessagesList.failed);
-    fmMessage(`add:' ${err}`);
+    fmMessage(`add: ${err}`);
   }
 };
 
@@ -61,7 +61,7 @@ export const rn = async (pathToFile, newFileName) => {
     return await fsPromises.rename(oldFileURL, newFileURL);
   } catch (err) {
     fmMessage(fmMessagesList.failed);
-    fmMessage(`rn:' ${err}`);
+    fmMessage(`rn: ${err}`);
   }
 };
 
@@ -129,7 +129,7 @@ export const mv = async (pathToFile, pathToNewDir) => {
     ]);
   } catch (err) {
     fmMessage(fmMessagesList.failed);
-    fmMessage(`mv:' ${err}`);
+    fmMessage(`mv: ${err}`);
   } finally {
     return;
   }
@@ -147,7 +147,7 @@ export const remove = async (pathToFile) => {
     await fsPromises.rm(fileUrl);
   } catch (err) {
     fmMessage(fmMessagesList.failed);
-    fmMessage(`rm:' ${err}`);
+    fmMessage(`rm: ${err}`);
   } finally {
     return;
   }
